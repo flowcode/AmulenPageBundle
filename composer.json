@@ -1,0 +1,18 @@
+{
+    "name": "vendor/amulen-page-bundle",
+    "description": "Description of project AmulenPageBundle.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juan Manuel Aguero",
+            "email": "jaguero@flowcode.com.ar"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony-cmf/seo-bundle": "1.0.*@dev",
+        "knplabs/knp-paginator-bundle": "~2.4",
+        "stof/doctrine-extensions-bundle": "~1.1@dev",
+        "egeloen/ckeditor-bundle": "~2.0"
+    }
+}
