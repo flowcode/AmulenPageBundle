@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Page
@@ -34,7 +36,7 @@ class Page {
 
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
@@ -67,6 +69,19 @@ class Page {
     private $blocks;
 
     /**
+     * @ManyToOne(targetEntity="Flowcode\ClassificationBundle\Entity\Category")
+     * @JoinColumn(name="category_id", referencedColumnName="id")
+     * */
+    private $category;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="position", type="integer", nullable=true)
+     */
+    private $position;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -92,7 +107,7 @@ class Page {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId() {
         return $this->id;
@@ -113,7 +128,7 @@ class Page {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -134,7 +149,7 @@ class Page {
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug() {
         return $this->slug;
@@ -155,7 +170,7 @@ class Page {
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription() {
         return $this->description;
@@ -176,7 +191,7 @@ class Page {
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled() {
         return $this->enabled;
@@ -206,7 +221,7 @@ class Page {
     /**
      * Get blocks
      *
-     * @return Collection 
+     * @return Collection
      */
     public function getBlocks() {
         return $this->blocks;
@@ -239,7 +254,7 @@ class Page {
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreated() {
         return $this->created;
@@ -260,7 +275,7 @@ class Page {
     /**
      * Get updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdated() {
         return $this->updated;
@@ -292,10 +307,52 @@ class Page {
     /**
      * Get template
      *
-     * @return string 
+     * @return string
      */
     public function getTemplate() {
         return $this->template;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \Flowcode\ClassificationBundle\Entity\Category $category
+     * @return Page
+     */
+    public function setCategory(\Flowcode\ClassificationBundle\Entity\Category $category = null) {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Flowcode\ClassificationBundle\Entity\Category
+     */
+    public function getCategory() {
+        return $this->category;
+    }
+
+    /**
+     * Set position
+     *
+     * @param integer $position
+     * @return Page
+     */
+    public function setPosition($position) {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return integer
+     */
+    public function getPosition() {
+        return $this->position;
     }
 
 }

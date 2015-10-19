@@ -23,6 +23,8 @@ class PageType extends AbstractType {
                     ),
                     'required' => false,
                 ))
+                ->add('category')
+                ->add('position')
                 ->add('enabled', null, array('required' => false,))
         ;
     }
