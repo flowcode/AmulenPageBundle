@@ -29,6 +29,12 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end()
+            ->children()
+                ->arrayNode('templates')
+                    ->useAttributeAsKey('id')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
         ;
 
         return $treeBuilder;

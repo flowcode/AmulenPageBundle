@@ -20,10 +20,11 @@ class FlowcodePageExtension extends Extension {
     public function load(array $configs, ContainerBuilder $container) {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        
+
         $this->bindParameters($container, $this->getAlias(), $config);
-        
+
         $container->setParameter('flowcode_page.block_types', $config['block_types']);
+        $container->setParameter('flowcode_page.templates', array_flip($config['templates']));
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');

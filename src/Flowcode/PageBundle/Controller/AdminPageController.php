@@ -75,7 +75,9 @@ class AdminPageController extends Controller {
      * @return Form The form
      */
     private function createCreateForm(Page $entity) {
-        $form = $this->createForm(new PageType(), $entity, array(
+        $availableTemplates = $this->container->getParameter('flowcode_page.templates');
+
+        $form = $this->createForm(new PageType($availableTemplates), $entity, array(
             'action' => $this->generateUrl('admin_page_create'),
             'method' => 'POST',
         ));
@@ -159,7 +161,8 @@ class AdminPageController extends Controller {
      * @return Form The form
      */
     private function createEditForm(Page $entity) {
-        $form = $this->createForm(new PageType(), $entity, array(
+        $availableTemplates = $this->container->getParameter('flowcode_page.templates');
+        $form = $this->createForm(new PageType($availableTemplates), $entity, array(
             'action' => $this->generateUrl('admin_page_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -395,8 +398,11 @@ class AdminPageController extends Controller {
      * @return Form The form
      */
     private function createBlockEditForm(Block $entity) {
-        $form = $this->createForm(new BlockType(), $entity, array(
-            'action' => $this->generateUrl('block_update', array('id' => $entity->getId())),
+        $types = $this->container->getParameter('flowcode_page.block_types');
+        $class = $types[$entity->getType()]["class_type"];
+
+        $form = $this->createForm(new $class, $entity, array(
+            'action' => $this->generateUrl('admin_page_block_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -422,13 +428,13 @@ class AdminPageController extends Controller {
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createBlockEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('block_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('admin_page_blocks', array('page_id' => $entity->getPage()->getId())));
         }
 
         return array(

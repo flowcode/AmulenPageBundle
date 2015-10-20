@@ -8,6 +8,12 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PageType extends AbstractType {
 
+    protected $availableTemplates;
+
+    function __construct($availableTemplates = null) {
+        $this->availableTemplates = $availableTemplates;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -17,10 +23,7 @@ class PageType extends AbstractType {
                 ->add('name')
                 ->add('description')
                 ->add('template', 'choice', array(
-                    'choices' => array(
-                        'FlowcodePageBundle:Page:default.html.twig' => 'default',
-                        'FlowcodePageBundle:Page:default-well.html' => 'with well'
-                    ),
+                    'choices' => $this->availableTemplates,
                     'required' => false,
                 ))
                 ->add('category')
