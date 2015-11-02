@@ -1,0 +1,18 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+{{ include('FlowcodePageBundle:AdminMenu:menuHeader.html.twig') }}
+<section class="content">
+    <h1>Block creation</h1>
+
+    {{ form(form, { 'style':'horizontal'}) }}
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('block') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+</section>
+{% endblock %}

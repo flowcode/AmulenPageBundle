@@ -1,0 +1,51 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body %}
+{{ include('FlowcodePageBundle:AdminMenu:menuHeader.html.twig') }}
+<section class="content">
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{{ 'All menus'|trans|title }}</h3>
+            <div class="box-tools">
+                <a href="{{ path('admin_menu_new') }}" class="btn btn-link btn-sm">
+                    <i class="fa fa-plus"></i> New Menu
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="records_list table">
+                <thead>
+                    <tr>
+                        <th{% if pagination.isSorted('p.Name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Name', 'p.name') }}</th>
+                        <th>Enabled</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in pagination %}
+                    <tr>
+                        <td><a href="{{ path('admin_menu_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                        <td>{{ entity.enabled ? 'yes' : 'no' }}</td>
+                        <td>
+                            <ul class="list-inline">
+                                <li>
+                                    <a class="btn btn-xs btn-link" href="{{ path('admin_menu_items', { 'id': entity.id }) }}">
+                                        items
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="count text-right">
+                Total of <span class="badge">{{ pagination.getTotalItemCount }}</span> pages.
+            </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+<ul>
+    {% for entity in entities %}
+        <li>
+            <span><i class="icon-leaf"></i> {{ entity.name|capitalize }}</span>
+            <a href="{{ path('admin_menu_item_edit', { 'id': entity.id }) }}">{{ "edit"|trans }}</a>
+            {{ include('FlowcodePageBundle:AdminMenu:menuitem_tree.html.twig',{ 'entities': entity.__children }) }}
+        </li>
+    {% endfor %}
+</ul>
