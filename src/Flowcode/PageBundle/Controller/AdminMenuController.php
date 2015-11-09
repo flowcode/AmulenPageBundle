@@ -295,8 +295,8 @@ class AdminMenuController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if($menuItem->getPage()){
-                $menuItem->setPageSlug($page->getSlug());
+            if($entity->getPage()){
+                $entity->setPageSlug($entity->getPage());
             }
 
             $em->persist($entity);
@@ -439,7 +439,7 @@ class AdminMenuController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('admin_menu_items', array('id' => $menuItem->getMenu()->getId())));
