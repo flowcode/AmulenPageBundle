@@ -1,16 +1,21 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
-    <h1>Page edit</h1>
-
-    {{ form(edit_form, {'style': 'horizontal'}) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_page') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+{{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3>{{ "edit page"|trans|title }}</h3>
+            <div class="box-tools">
+                <a href="{{ path('admin_page') }}">
+                    Back to the list
+                </a>
+                {{ form(delete_form) }}
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(edit_form) }}
+        </div>
+    </div>
+</section>
 {% endblock %}

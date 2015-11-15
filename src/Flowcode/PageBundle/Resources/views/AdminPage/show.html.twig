@@ -1,44 +1,102 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Page</h1>
+{% block body %}
+{{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
+<section class="content">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">{{ entity.name }}</h3>
+                    <div class="box-tools">
+                        <a href="{{ path('admin_page') }}" class="btn btn-xs btn-link">
+                            Back to the list
+                        </a>
+                        <a href="{{ path('admin_page_edit', { 'id': entity.id }) }}" class="btn btn-xs btn-link">
+                            Edit
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-condensed">
+                        <tbody>
+                            <tr>
+                                <th>Slug</th>
+                                <td>{{ entity.slug }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ entity.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Enabled</th>
+                                <td>{{ entity.enabled }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Blocks</h3>
+                    <div class="box-tools">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                {{ "create new"|trans }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ path('admin_page_block_new', {'page_id': entity.id, 'type' : 'type_text'}) }}">
+                                        {{ "plain text"|trans }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('admin_page_block_new', {'page_id': entity.id, 'type' : 'type_html'}) }}">
+                                        {{ "html"|trans }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{{ "Name"|trans }}</th>
+                                <th>{{ "Type"|trans }}</th>
+                                <th>{{ "Actions"|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entity in entity.blocks %}
+                            <tr>
+                                <td><a href="{{ path('admin_page_block_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>{{ entity.name }}</td>
+                                <td>{{ entity.type }}</td>
+                                <td>
+                                    <ul class="list-inline">
+                                        <li>
+                                            <a href="{{ path('admin_page_block_show', { 'id': entity.id }) }}">{{ "show"|trans }}</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin_page_block_edit', { 'id': entity.id }) }}">{{ "edit"|trans }}</a>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ entity.slug }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ entity.description }}</td>
-            </tr>
-            <tr>
-                <th>Enabled</th>
-                <td>{{ entity.enabled }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_page') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('admin_page_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+</section>
 {% endblock %}

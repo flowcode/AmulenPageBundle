@@ -1,15 +1,20 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
 {% block body -%}
-    <h1>Page creation</h1>
-
-    {{ form(form, {'style': 'horizontal'}) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_page') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">{{ "create"|trans|title }}</h3>
+            <div class="box-tools">
+                <a href="{{ path('admin_page') }}">
+                    Back to the list
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(form, {'style': 'horizontal'}) }}
+        </div>
+    </div>
+</section>
 {% endblock %}
