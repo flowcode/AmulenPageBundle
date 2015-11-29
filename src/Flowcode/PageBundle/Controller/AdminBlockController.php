@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Flowcode\PageBundle\Entity\Block;
+use Amulen\PageBundle\Entity\Block;
 use Flowcode\PageBundle\Form\BlockType;
 
 /**
@@ -67,10 +67,7 @@ class AdminBlockController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            
-//            $repository = $em->getRepository('Gedmo\\Translatable\\Entity\\Translation');
-//            $repository->translate($entity, 'content', 'en', $entity->getContent());
-            
+
             $em->persist($entity);
             $em->flush();
 
@@ -91,7 +88,7 @@ class AdminBlockController extends Controller {
      * @return \Symfony\Component\Form\Form The form
      */
     private function createCreateForm(Block $entity) {
-        
+
         $types = $this->container->getParameter('flowcode_page.block_types');
         $class = $types["type_text"]["class_type"];
         $form = $this->createForm(new $class(), $entity, array(

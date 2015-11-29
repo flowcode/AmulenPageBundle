@@ -37,7 +37,7 @@ class PageType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Flowcode\PageBundle\Entity\Page'
+            'data_class' => 'Amulen\PageBundle\Entity\Page'
         ));
     }
 

@@ -12,9 +12,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Menu
- *
- * @ORM\Table(name="page_menu")
- * @ORM\Entity(repositoryClass="MenuRepository")
  */
 class Menu
 {
@@ -25,14 +22,14 @@ class Menu
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
 
     /**
@@ -40,12 +37,12 @@ class Menu
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @OneToMany(targetEntity="MenuItem", mappedBy="menu")
      * */
-    private $items;
+    protected $items;
 
 
     /**
@@ -54,7 +51,7 @@ class Menu
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @var datetime $updated
@@ -62,7 +59,7 @@ class Menu
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    protected $updated;
 
     /**
      * Constructor

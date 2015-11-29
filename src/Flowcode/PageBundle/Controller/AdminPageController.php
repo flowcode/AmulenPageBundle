@@ -2,10 +2,9 @@
 
 namespace Flowcode\PageBundle\Controller;
 
-use Flowcode\PageBundle\Entity\Block;
-use Flowcode\PageBundle\Entity\Page;
+use Amulen\PageBundle\Entity\Block;
+use Amulen\PageBundle\Entity\Page;
 use Flowcode\PageBundle\Form\BlockType;
-use Flowcode\PageBundle\Form\PageType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -31,7 +30,7 @@ class AdminPageController extends Controller {
 
         $page = $request->get("page", 1);
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT p FROM FlowcodePageBundle:Page p";
+        $dql = "SELECT p FROM AmulenPageBundle:Page p";
         $query = $em->createQuery($dql);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', $page));
@@ -75,9 +74,8 @@ class AdminPageController extends Controller {
      * @return Form The form
      */
     private function createCreateForm(Page $entity) {
-        $availableTemplates = $this->container->getParameter('flowcode_page.templates');
 
-        $form = $this->createForm(new PageType($availableTemplates), $entity, array(
+        $form = $this->createForm($this->get("amulen.page.form.page"), $entity, array(
             'action' => $this->generateUrl('admin_page_create'),
             'method' => 'POST',
         ));
@@ -113,7 +111,7 @@ class AdminPageController extends Controller {
      */
     public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('FlowcodePageBundle:Page')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Page entity.');
@@ -137,7 +135,7 @@ class AdminPageController extends Controller {
     public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Page')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Page entity.');
@@ -161,8 +159,7 @@ class AdminPageController extends Controller {
      * @return Form The form
      */
     private function createEditForm(Page $entity) {
-        $availableTemplates = $this->container->getParameter('flowcode_page.templates');
-        $form = $this->createForm(new PageType($availableTemplates), $entity, array(
+        $form = $this->createForm($this->get("amulen.page.form.page"), $entity, array(
             'action' => $this->generateUrl('admin_page_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
@@ -182,7 +179,7 @@ class AdminPageController extends Controller {
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Page')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Page entity.');
@@ -217,7 +214,7 @@ class AdminPageController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FlowcodePageBundle:Page')->find($id);
+            $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Page entity.');
@@ -255,9 +252,15 @@ class AdminPageController extends Controller {
      */
     public function blocksAction($page_id) {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('FlowcodePageBundle:Block')->findBy(array("page" => $page_id));
-        $page = $em->getRepository('FlowcodePageBundle:Page')->find($page_id);
+        $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+        $entities = array();
+        foreach ($availableLangs as $key => $value) {
+            $entities[] = array(
+                'lang' => $key,
+                'blocks' => $em->getRepository('AmulenPageBundle:Block')->findBy(array("page" => $page_id, "lang" => $value))
+            );
+        }
+        $page = $em->getRepository('AmulenPageBundle:Page')->find($page_id);
 
         return array(
             'page' => $page,
@@ -278,16 +281,25 @@ class AdminPageController extends Controller {
         $form = $this->createBlockCreateForm($entity);
         $form->handleRequest($request);
 
+        $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $page= $entity->getPage();
+            foreach ($availableLangs as $key => $value) {
+                $entityLang = new Block();
+                $entityLang->setName($entity->getName());
+                $entityLang->setLang($key);
+                $entityLang->setContent($entity->getContent());
+                $entityLang->setPage($entity->getPage());
+                $entityLang->setType($type);
+                $em->persist($entityLang);
+            }
 
-//            $repository = $em->getRepository('Gedmo\\Translatable\\Entity\\Translation');
-//            $repository->translate($entity, 'content', 'en', $entity->getContent());
 
-            $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_page_block_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_page_show', array('id' => $page->getId())));
         }
 
         return array(
@@ -327,7 +339,7 @@ class AdminPageController extends Controller {
      */
     public function newBlockAction($page_id, $type) {
         $em = $this->getDoctrine()->getManager();
-        $page = $em->getRepository('FlowcodePageBundle:Page')->find($page_id);
+        $page = $em->getRepository('AmulenPageBundle:Page')->find($page_id);
 
         $entity = new Block();
         $entity->setType($type);
@@ -350,7 +362,7 @@ class AdminPageController extends Controller {
     public function showBlockAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Block')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Block entity.');
@@ -374,7 +386,8 @@ class AdminPageController extends Controller {
     public function editBlockAction($id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Block')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
+        $availableEntityLangs = $em->getRepository('AmulenPageBundle:Block')->findBy(array('page' => $entity->getPage(), 'name' => $entity->getName()));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Block entity.');
@@ -385,6 +398,7 @@ class AdminPageController extends Controller {
 
         return array(
             'entity' => $entity,
+            'availableEntityLangs' => $availableEntityLangs,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -421,7 +435,7 @@ class AdminPageController extends Controller {
     public function updateBlockAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Block')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Block entity.');
@@ -434,8 +448,11 @@ class AdminPageController extends Controller {
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_page_blocks', array('page_id' => $entity->getPage()->getId())));
+            $this->addFlash("success", "Block updated");
+            return $this->redirect($this->generateUrl('admin_page_block_edit', array('id' => $entity->getId())));
         }
+
+        $this->addFlash("warning", "Could not update");
 
         return array(
             'entity' => $entity,
@@ -456,7 +473,7 @@ class AdminPageController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FlowcodePageBundle:Block')->find($id);
+            $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Block entity.');

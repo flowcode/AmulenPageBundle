@@ -9,15 +9,9 @@ use Doctrine\ORM\Mapping\OneToMany;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Flowcode\PageBundle\Entity\Page;
-use Flowcode\PageBundle\Entity\MenuItem;
 
 /**
  * MenuItem
- *
- * @Gedmo\Tree(type="nested")
- * @ORM\Table(name="page_menu_item")
- * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
  */
 class MenuItem
 {
@@ -28,35 +22,35 @@ class MenuItem
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
-    private $name;
+    protected $name;
 
     /**
-     * @ManyToOne(targetEntity="Menu", inversedBy="items")
+     * @ManyToOne(targetEntity="\Amulen\PageBundle\Entity\Menu", inversedBy="items")
      * @JoinColumn(name="menu_id", referencedColumnName="id")
      */
-    private $menu;
+    protected $menu;
 
     /**
-     *@var Page
+     *@var \Amulen\PageBundle\Entity\Page
      *
-     * @ManyToOne(targetEntity="Page")
+     * @ManyToOne(targetEntity="\Amulen\PageBundle\Entity\Page")
      * @JoinColumn(name="page_id", referencedColumnName="id")
      */
-    private $page;
+    protected $page;
 
     /**
      *@var string
      *
      * @ORM\Column(name="page_slug", type="string", length=255, nullable=true)
      */
-    private $pageSlug;
+    protected $pageSlug;
 
     /**
      * @var integer
@@ -64,7 +58,7 @@ class MenuItem
      * @Gedmo\TreeLeft
      * @ORM\Column(name="lft", type="integer")
      */
-    private $lft;
+    protected $lft;
 
     /**
      * @var integer
@@ -72,7 +66,7 @@ class MenuItem
      * @Gedmo\TreeRight
      * @ORM\Column(name="rgt", type="integer")
      */
-    private $rgt;
+    protected $rgt;
 
     /**
      * @var integer
@@ -80,31 +74,31 @@ class MenuItem
      * @Gedmo\TreeLevel
      * @ORM\Column(name="lvl", type="integer")
      */
-    private $lvl;
+    protected $lvl;
 
     /**
      * @Gedmo\TreeRoot
      * @ORM\Column(name="root", type="integer", nullable=true)
      */
-    private $root;
+    protected $root;
 
     /**
      * @ORM\Column(name="is_root", type="boolean")
      */
-    private $isRoot;
+    protected $isRoot;
 
     /**
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="MenuItem", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $parent;
+    protected $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="MenuItem", mappedBy="parent")
      * @ORM\OrderBy({"lft" = "ASC"})
      */
-    private $children;
+    protected $children;
 
     /**
      * Constructor
@@ -129,7 +123,7 @@ class MenuItem
      * Set name
      *
      * @param string $name
-     * @return MenuItem
+     * @return \Amulen\PageBundle\Entity\MenuItem
      */
     public function setName($name)
     {
@@ -152,7 +146,7 @@ class MenuItem
      * Set isRoot.
      *
      * @param boolean $isRoot
-     * @return MenuItem
+     * @return \Amulen\PageBundle\Entity\MenuItem
      */
     public function setIsRoot($isRoot)
     {
@@ -181,7 +175,7 @@ class MenuItem
      * Set lft
      *
      * @param integer $lft
-     * @return Category
+     * @return \Amulen\PageBundle\Entity\MenuItem
      */
     public function setLft($lft)
     {
@@ -204,7 +198,7 @@ class MenuItem
      * Set rgt
      *
      * @param integer $rgt
-     * @return Category
+     * @return \Amulen\PageBundle\Entity\MenuItem
      */
     public function setRgt($rgt)
     {
@@ -274,10 +268,10 @@ class MenuItem
     /**
      * Set parent
      *
-     * @param \Flowcode\PageBundle\Entity\MenuItem $parent
+     * @param \Amulen\PageBundle\Entity\MenuItem $parent
      * @return Category
      */
-    public function setParent(\Flowcode\PageBundle\Entity\MenuItem $parent = null)
+    public function setParent(\Amulen\PageBundle\Entity\MenuItem $parent = null)
     {
         $this->parent = $parent;
 
@@ -287,7 +281,7 @@ class MenuItem
     /**
      * Get parent
      *
-     * @return \Flowcode\PageBundle\Entity\MenuItem
+     * @return \Amulen\PageBundle\Entity\MenuItem
      */
     public function getParent()
     {
@@ -297,10 +291,10 @@ class MenuItem
     /**
      * Add children
      *
-     * @param \Flowcode\PageBundle\Entity\MenuItem $children
+     * @param \Amulen\PageBundle\Entity\MenuItem $children
      * @return Category
      */
-    public function addChild(\Flowcode\PageBundle\Entity\MenuItem $children)
+    public function addChild(\Amulen\PageBundle\Entity\MenuItem $children)
     {
         $this->children[] = $children;
 
@@ -310,9 +304,9 @@ class MenuItem
     /**
      * Remove children
      *
-     * @param \Flowcode\PageBundle\Entity\MenuItem $children
+     * @param \Amulen\PageBundle\Entity\MenuItem $children
      */
-    public function removeChild(\Flowcode\PageBundle\Entity\MenuItem $children)
+    public function removeChild(\Amulen\PageBundle\Entity\MenuItem $children)
     {
         $this->children->removeElement($children);
     }
@@ -330,10 +324,10 @@ class MenuItem
     /**
      * Set page
      *
-     * @param \Flowcode\PageBundle\Entity\Menu $menu
+     * @param \Amulen\PageBundle\Entity\Menu $menu
      * @return Block
      */
-    public function setMenu(\Flowcode\PageBundle\Entity\Menu $menu = null) {
+    public function setMenu(\Amulen\PageBundle\Entity\Menu $menu = null) {
         $this->menu = $menu;
 
         return $this;
@@ -342,7 +336,7 @@ class MenuItem
     /**
      * Get page
      *
-     * @return \Flowcode\PageBundle\Entity\Menu
+     * @return \Amulen\PageBundle\Entity\Menu
      */
     public function getMenu() {
         return $this->menu;
@@ -351,10 +345,10 @@ class MenuItem
     /**
      * Set page
      *
-     * @param \Flowcode\PageBundle\Entity\Page $page
+     * @param \Amulen\PageBundle\Entity\Page $page
      * @return MenuItem
      */
-    public function setPage(\Flowcode\PageBundle\Entity\Page $page = null) {
+    public function setPage(\Amulen\PageBundle\Entity\Page $page = null) {
         $this->page = $page;
 
         return $this;
@@ -381,7 +375,7 @@ class MenuItem
     /**
      * Get page
      *
-     * @return \Flowcode\PageBundle\Entity\Page
+     * @return \Amulen\PageBundle\Entity\Page
      */
     public function getPage() {
         return $this->page;

@@ -1,0 +1,12 @@
+<div class="row">
+    {% for page in pages %}
+    <div class="col-sm-3">
+        <a href="{{ path('page', { 'slug': page.slug }) }}">
+            <h3>{{page.name}}</h3>
+        </a>
+        <div>
+            {{ render(controller('FlowcodePageBundle:Page:block', {'pageId':page.id,'blockName':'preview'})) }}
+        </div>
+    </div>
+    {% endfor %}
+</div>

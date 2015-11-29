@@ -2,8 +2,8 @@
 
 namespace Flowcode\PageBundle\Controller;
 
-use Flowcode\PageBundle\Entity\MenuItem;
-use Flowcode\PageBundle\Entity\Menu;
+use Amulen\PageBundle\Entity\MenuItem;
+use Amulen\PageBundle\Entity\Menu;
 use Flowcode\PageBundle\Form\MenuItemType;
 use Flowcode\PageBundle\Form\MenuType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -29,8 +29,8 @@ class MenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $itemRoot = $em->getRepository('FlowcodePageBundle:MenuItem')->findOneBy(array('menu' => $menu, 'isRoot'=> true));
-        $menuItems = $em->getRepository('FlowcodePageBundle:MenuItem')->childrenHierarchy($itemRoot);
+        $itemRoot = $em->getRepository('AmulenPageBundle:MenuItem')->findOneBy(array('menu' => $menu, 'isRoot'=> true));
+        $menuItems = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy($itemRoot);
 
         $this->updateLinks($menuItems);
 
@@ -43,7 +43,7 @@ class MenuController extends Controller
     private function updateLinks(&$items){
         $em = $this->getDoctrine()->getManager();
         foreach ($items as &$itemArr) {
-            $menuItem = $em->getRepository('FlowcodePageBundle:MenuItem')->find($itemArr['id']);
+            $menuItem = $em->getRepository('AmulenPageBundle:MenuItem')->find($itemArr['id']);
             if($menuItem->getPage()){
                 $page = $menuItem->getPage();
                 $itemArr['pageSlug'] = $page->getSlug();

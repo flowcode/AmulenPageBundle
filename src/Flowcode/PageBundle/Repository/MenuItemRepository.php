@@ -1,6 +1,6 @@
 <?php
 
-namespace Flowcode\PageBundle\Entity;
+namespace Flowcode\PageBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

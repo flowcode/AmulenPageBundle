@@ -2,8 +2,8 @@
 
 namespace Flowcode\PageBundle\Controller;
 
-use Flowcode\PageBundle\Entity\MenuItem;
-use Flowcode\PageBundle\Entity\Menu;
+use Amulen\PageBundle\Entity\MenuItem;
+use Amulen\PageBundle\Entity\Menu;
 use Flowcode\PageBundle\Form\MenuItemType;
 use Flowcode\PageBundle\Form\MenuType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -31,7 +31,7 @@ class AdminMenuController extends Controller
     {
         $page = $request->get("page", 1);
         $em = $this->getDoctrine()->getManager();
-        $dql = "SELECT p FROM FlowcodePageBundle:Menu p";
+        $dql = "SELECT p FROM AmulenPageBundle:Menu p";
         $query = $em->createQuery($dql);
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($query, $this->get('request')->query->get('page', $page));
@@ -123,7 +123,7 @@ class AdminMenuController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('FlowcodePageBundle:Menu')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Menu')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Menu entity.');
@@ -148,7 +148,7 @@ class AdminMenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Menu')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Menu')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Menu entity.');
@@ -194,7 +194,7 @@ class AdminMenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:Menu')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:Menu')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Menu entity.');
@@ -230,7 +230,7 @@ class AdminMenuController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FlowcodePageBundle:Menu')->find($id);
+            $entity = $em->getRepository('AmulenPageBundle:Menu')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Menu entity.');
@@ -271,7 +271,7 @@ class AdminMenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$entities = $em->getRepository('FlowcodePageBundle:MenuItem')->findBy(array("menu" => $menu->getId()));
-        $entities = $em->getRepository('FlowcodePageBundle:MenuItem')->childrenHierarchy(null);
+        $entities = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy(null);
 
         return array(
             'menu' => $menu,
@@ -362,7 +362,7 @@ class AdminMenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('FlowcodePageBundle:MenuItem')->find($id);
+        $entity = $em->getRepository('AmulenPageBundle:MenuItem')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find MenuItem entity.');
@@ -465,7 +465,7 @@ class AdminMenuController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('FlowcodePageBundle:MenuItem')->find($id);
+            $entity = $em->getRepository('AmulenPageBundle:MenuItem')->find($id);
 
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find MenuItem entity.');

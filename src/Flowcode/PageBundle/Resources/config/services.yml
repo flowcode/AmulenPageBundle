@@ -1,0 +1,28 @@
+services:
+
+    amulen.page.form.page:
+        class: Flowcode\PageBundle\Form\PageType
+        arguments: [%flowcode_page.templates%]
+        tags:
+            - { name: form.type, alias: page_type }
+
+    amulen.page.form.block:
+        class: Flowcode\PageBundle\Form\BlockType
+        tags:
+            - { name: form.type, alias: block_type }
+
+    amulen.page.form.htmlblock:
+        class: Flowcode\PageBundle\Form\HtmlBlockType
+        tags:
+            - { name: form.type, alias: htmlblock_type }
+
+    amulen.page.form.textblock:
+        class: Flowcode\PageBundle\Form\TextBlockType
+        tags:
+            - { name: form.type, alias: textblock_type }
+
+    amulen.page.locale_listener:
+        class: Flowcode\PageBundle\Listener\LocaleListener
+        arguments: [%kernel.default_locale%]
+        tags:
+            -  { name: kernel.event_subscriber }

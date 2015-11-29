@@ -12,9 +12,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * Page
- *
- * @ORM\Table(name="page_page")
- * @ORM\Entity(repositoryClass="PageRepository")
  */
 class Page {
 
@@ -25,14 +22,14 @@ class Page {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
@@ -40,46 +37,46 @@ class Page {
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(name="slug", type="string", length=255, unique=true)
      */
-    private $slug;
+    protected $slug;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text")
      */
-    private $description;
+    protected $description;
 
     /**
      * @var string
      *
      * @ORM\Column(name="template", type="string", length=255)
      */
-    private $template;
+    protected $template;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="enabled", type="boolean")
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @OneToMany(targetEntity="Block", mappedBy="page")
      * */
-    private $blocks;
+    protected $blocks;
 
     /**
-     * @ManyToOne(targetEntity="Flowcode\ClassificationBundle\Entity\Category")
+     * @ManyToOne(targetEntity="Amulen\ClassificationBundle\Entity\Category")
      * @JoinColumn(name="category_id", referencedColumnName="id")
      * */
-    private $category;
+    protected $category;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="position", type="integer", nullable=true)
      */
-    private $position;
+    protected $position;
 
     /**
      * @var datetime $created
@@ -87,7 +84,7 @@ class Page {
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
-    private $created;
+    protected $created;
 
     /**
      * @var datetime $updated
@@ -95,7 +92,7 @@ class Page {
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
-    private $updated;
+    protected $updated;
 
     /**
      * Constructor
@@ -316,10 +313,10 @@ class Page {
     /**
      * Set category
      *
-     * @param \Flowcode\ClassificationBundle\Entity\Category $category
+     * @param \Amulen\ClassificationBundle\Entity\Category $category
      * @return Page
      */
-    public function setCategory(\Flowcode\ClassificationBundle\Entity\Category $category = null) {
+    public function setCategory(\Amulen\ClassificationBundle\Entity\Category $category = null) {
         $this->category = $category;
 
         return $this;
@@ -328,7 +325,7 @@ class Page {
     /**
      * Get category
      *
-     * @return \Flowcode\ClassificationBundle\Entity\Category
+     * @return \Amulen\ClassificationBundle\Entity\Category
      */
     public function getCategory() {
         return $this->category;

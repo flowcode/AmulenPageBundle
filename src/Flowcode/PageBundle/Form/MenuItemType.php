@@ -25,7 +25,7 @@ class MenuItemType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Flowcode\PageBundle\Entity\MenuItem'
+            'data_class' => 'Amulen\PageBundle\Entity\MenuItem'
         ));
     }
 

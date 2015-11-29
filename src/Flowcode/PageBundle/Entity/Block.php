@@ -9,9 +9,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Block
- *
- * @ORM\Table(name="page_block")
- * @ORM\Entity(repositoryClass="BlockRepository")
  */
 class Block implements \Gedmo\Translatable\Translatable {
 
@@ -22,47 +19,47 @@ class Block implements \Gedmo\Translatable\Translatable {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
-     * 
+     *
      * @Gedmo\Translatable
      * @ORM\Column(name="content", type="text")
      */
-    private $content;
+    protected $content;
 
     /**
      * @ManyToOne(targetEntity="Page", inversedBy="blocks")
      * @JoinColumn(name="page_id", referencedColumnName="id")
      * */
-    private $page;
+    protected $page;
 
     /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255)
      */
-    private $type;
+    protected $type;
 
     /**
-     * @Gedmo\Locale
-     * Used locale to override Translation listener`s locale
-     * this is not a mapped field of entity metadata, just a simple property
+     * @var string
+     *
+     * @ORM\Column(name="lang", type="string", length=10, nullable=true)
      */
-    private $locale;
+    protected $lang;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId() {
         return $this->id;
@@ -83,7 +80,7 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName() {
         return $this->name;
@@ -104,7 +101,7 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Get lang
      *
-     * @return string 
+     * @return string
      */
     public function getLang() {
         return $this->lang;
@@ -125,7 +122,7 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent() {
         return $this->content;
@@ -134,10 +131,10 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Set page
      *
-     * @param \Flowcode\PageBundle\Entity\Page $page
+     * @param \Amulen\PageBundle\Entity\Page $page
      * @return Block
      */
-    public function setPage(\Flowcode\PageBundle\Entity\Page $page = null) {
+    public function setPage(\Amulen\PageBundle\Entity\Page $page = null) {
         $this->page = $page;
 
         return $this;
@@ -146,7 +143,7 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Get page
      *
-     * @return \Flowcode\PageBundle\Entity\Page 
+     * @return \Amulen\PageBundle\Entity\Page
      */
     public function getPage() {
         return $this->page;
@@ -175,7 +172,7 @@ class Block implements \Gedmo\Translatable\Translatable {
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType() {
         return $this->type;

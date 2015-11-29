@@ -1,16 +1,26 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Block edit</h1>
-
-    {{ form(edit_form, { 'style':'horizontal'}) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_page_blocks', { 'page_id':entity.getPage.id }) }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+{% block body %}
+{{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
+<section class="content">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">{{'editing block of page:'|capitalize}}
+                <a href="{{ path('admin_page_show', { 'id': entity.getPage.id }) }}">{{entity.getPage.name|title}}</a>
+            </h3>
+            <div class="box-tools">
+                {% for entityLang in availableEntityLangs %}
+                {% if entityLang.lang != entity.lang %}
+                    <a href="{{ path('admin_page_block_edit', { 'id': entityLang.id }) }}" class="btn btn-link">
+                        {{entityLang.lang}}
+                    </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(edit_form) }}
+        </div>
+    </div>
+</section>
 {% endblock %}

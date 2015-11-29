@@ -1,11 +1,11 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
-{% block body -%}
-    <h1>Block creation</h1>
+{% block body %}
+<h1>{{ 'new block'|trans|title }}</h1>
 
-    {{ form(form, { 'style':'horizontal'}) }}
+{{ form(form) }}
 
-        <ul class="record_actions">
+<ul class="record_actions">
     <li>
         <a href="{{ path('block') }}">
             Back to the list

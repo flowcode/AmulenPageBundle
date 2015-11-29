@@ -23,6 +23,7 @@ class TextBlockType extends AbstractType {
                 ->add('type', 'hidden', array(
                     'data' => 'type_text',
                 ))
+                ->add('lang', 'hidden')
         ;
     }
 
@@ -31,7 +32,7 @@ class TextBlockType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Flowcode\PageBundle\Entity\Block'
+            'data_class' => 'Amulen\PageBundle\Entity\Block'
         ));
     }
 

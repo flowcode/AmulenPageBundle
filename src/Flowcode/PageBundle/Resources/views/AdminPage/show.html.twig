@@ -63,35 +63,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>{{ "Name"|trans }}</th>
-                                <th>{{ "Type"|trans }}</th>
-                                <th>{{ "Actions"|trans }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for entity in entity.blocks %}
-                            <tr>
-                                <td><a href="{{ path('admin_page_block_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                <td>{{ entity.name }}</td>
-                                <td>{{ entity.type }}</td>
-                                <td>
-                                    <ul class="list-inline">
-                                        <li>
-                                            <a href="{{ path('admin_page_block_show', { 'id': entity.id }) }}">{{ "show"|trans }}</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('admin_page_block_edit', { 'id': entity.id }) }}">{{ "edit"|trans }}</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {{render(controller('FlowcodePageBundle:AdminPage:blocks', {'page_id': entity.id}))}}
                 </div>
             </div>
         </div>

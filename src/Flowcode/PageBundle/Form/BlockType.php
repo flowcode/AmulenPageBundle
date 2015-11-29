@@ -11,31 +11,35 @@ class BlockType extends AbstractType {
     protected $availableTypes;
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
+    * @param FormBuilderInterface $builder
+    * @param array $options
+    */
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
         $builder
-                ->add('name')
-                ->add('content')
-                ->add('page')
-                ->add('type', 'hidden')
+        ->add('name')
+        ->add('content')
+        ->add('page')
+        ->add('type', 'hidden')
+        ->add('lang', 'choice', array(
+            'choices'  => array('es' => 'es', 'en' => 'en'),
+            'required' => false,
+        ))
         ;
     }
 
     /**
-     * @param OptionsResolverInterface $resolver
-     */
+    * @param OptionsResolverInterface $resolver
+    */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Flowcode\PageBundle\Entity\Block'
+            'data_class' => 'Amulen\PageBundle\Entity\Block'
         ));
     }
 
     /**
-     * @return string
-     */
+    * @return string
+    */
     public function getName() {
         return 'flowcode_pagebundle_block';
     }
