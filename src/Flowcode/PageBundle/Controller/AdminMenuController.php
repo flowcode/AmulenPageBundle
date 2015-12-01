@@ -3,6 +3,7 @@
 namespace Flowcode\PageBundle\Controller;
 
 use Amulen\PageBundle\Entity\MenuItem;
+use Amulen\PageBundle\Entity\MenuItemLabel;
 use Amulen\PageBundle\Entity\Menu;
 use Flowcode\PageBundle\Form\MenuItemType;
 use Flowcode\PageBundle\Form\MenuType;
@@ -302,6 +303,16 @@ class AdminMenuController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+            foreach ($availableLangs as $key => $value) {
+                $menuItemLabel = new MenuItemLabel();
+                $menuItemLabel->setLang($key);
+                $menuItemLabel->setContent($entity->getName());
+                $menuItemLabel->setMenuItem($entity);
+                $em->persist($menuItemLabel);
+            }
+            $em->flush();
+
             return $this->redirect($this->generateUrl('admin_menu_item_show', array('id' => $entity->getId())));
         }
 
@@ -494,4 +505,22 @@ class AdminMenuController extends Controller
                         ->getForm()
         ;
     }
+
+    /**
+     * Finds and displays a Block entity.
+     *
+     * @Route("/menuitem/{$menu_item_id}/labels", name="admin_page_menuitem_labels")
+     * @Method("GET")
+     * @Template()
+     */
+    public function menuItemLabelsAction($menu_item_id) {
+        $em = $this->getDoctrine()->getManager();
+        $labels = $em->getRepository('AmulenPageBundle:MenuItemLabel')->findBy(array("menuItem" => $menu_item_id));
+
+        return array(
+            'labels' => $labels,
+        );
+    }
+
+
 }

@@ -1,0 +1,8 @@
+<ul class="list-inline">
+    {% for label in labels %}
+    <li>
+        <span class="label label-default">{{label.lang}}</span>
+        {{label.content}}
+    </li>
+    {% endfor %}
+</ul>

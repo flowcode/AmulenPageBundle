@@ -25,14 +25,14 @@ class MenuController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function showAction(Menu $menu)
+    public function showAction(Request $request, Menu $menu)
     {
         $em = $this->getDoctrine()->getManager();
 
         $itemRoot = $em->getRepository('AmulenPageBundle:MenuItem')->findOneBy(array('menu' => $menu, 'isRoot'=> true));
         $menuItems = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy($itemRoot);
-
-        $this->updateLinks($menuItems);
+        $locale = $request->getLocale();
+        $this->updateLinks($menuItems, $locale);
 
         return array(
             'extra_class' => 'nav navbar-nav navbar-right',
@@ -40,15 +40,21 @@ class MenuController extends Controller
         );
     }
 
-    private function updateLinks(&$items){
+    private function updateLinks(&$items, $locale){
         $em = $this->getDoctrine()->getManager();
         foreach ($items as &$itemArr) {
             $menuItem = $em->getRepository('AmulenPageBundle:MenuItem')->find($itemArr['id']);
+            $menuItemLabel = $em->getRepository('AmulenPageBundle:MenuItemLabel')->findOneBy(array("menuItem" => $itemArr['id'], "lang" => $locale));
             if($menuItem->getPage()){
                 $page = $menuItem->getPage();
                 $itemArr['pageSlug'] = $page->getSlug();
+                if($menuItemLabel){
+                    $itemArr['label'] = $menuItemLabel->getContent();
+                }else {
+                    $itemArr['label'] = $menuItem->getName();
+                }
             }
-            $this->updateLinks($itemArr['__children']);
+            $this->updateLinks($itemArr['__children'], $locale);
         }
     }
 }

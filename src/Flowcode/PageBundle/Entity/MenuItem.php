@@ -53,6 +53,11 @@ class MenuItem
     protected $pageSlug;
 
     /**
+     * @OneToMany(targetEntity="Amulen\PageBundle\Entity\MenuItemLabel", mappedBy="menuItem")
+     * */
+    protected $labels;
+
+    /**
      * @var integer
      *
      * @Gedmo\TreeLeft
@@ -107,6 +112,7 @@ class MenuItem
     {
         $this->isRoot = false;
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->labels = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -379,6 +385,36 @@ class MenuItem
      */
     public function getPage() {
         return $this->page;
+    }
+
+    /**
+     * Add blocks
+     *
+     * @param \Amulen\PageBundle\Entity\MenuItemLabel $blocks
+     * @return \Amulen\PageBundle\Entity\MenuItem
+     */
+    public function addMenuItemLabel(\Amulen\PageBundle\Entity\MenuItemLabel $blocks) {
+        $this->blocks[] = $blocks;
+
+        return $this;
+    }
+
+    /**
+     * Remove blocks
+     *
+     * @param \Amulen\PageBundle\Entity\MenuItemLabel $blocks
+     */
+    public function removeMenuItemLabel(\Amulen\PageBundle\Entity\MenuItemLabel $blocks) {
+        $this->blocks->removeElement($blocks);
+    }
+
+    /**
+     * Get blocks
+     *
+     * @return Collection
+     */
+    public function getMenuItemLabels() {
+        return $this->blocks;
     }
 
 }

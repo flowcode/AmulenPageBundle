@@ -9,11 +9,11 @@
         <li class="{% if isdropdown %}dropdown{% endif %}" >
             {% if item.pageSlug %}
                 <a href="{{ path('page', { 'slug': item.pageSlug }) }}" >
-                    {{ item.name|title }}
+                    {{ item.label|title }}
                 </a>
             {% else %}
                 <a href="#" {% if isdropdown %}class="dropdown-toggle" data-toggle="dropdown"{% endif %} >
-                    {{ item.name|title }}
+                    {{ item.label|title }}
                 </a>
             {% endif %}
             {{ include('FlowcodePageBundle:Menu:show.html.twig',{ 'menuitems': item.__children, 'extra_class': 'dropdown-menu' }) }}
