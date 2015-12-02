@@ -11,6 +11,11 @@ services:
         tags:
             - { name: form.type, alias: block_type }
 
+    amulen.page.form.menuitemlabel:
+        class: Flowcode\PageBundle\Form\MenuItemLabelType
+        tags:
+            - { name: form.type, alias: menuitemlabel_type }
+
     amulen.page.form.htmlblock:
         class: Flowcode\PageBundle\Form\HtmlBlockType
         tags:

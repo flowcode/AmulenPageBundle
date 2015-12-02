@@ -3,16 +3,18 @@
 {% block body -%}
 {{ include('FlowcodePageBundle:AdminMenu:menuHeader.html.twig') }}
 <section class="content">
-    <h1>Block creation</h1>
-
-    {{ form(form, { 'style':'horizontal'}) }}
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('block') }}">
-                Back to the list
-            </a>
-        </li>
-    </ul>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{{"create menuitem"|trans|title}}</h3>
+            <div class="box-tools">
+                <a href="{{ path('admin_menu_items',{"id":entity.menu.id}) }}">
+                    {{"back to menu"|trans}}
+                </a>
+            </div>
+        </div>
+        <div class="box-body">
+            {{ form(form, { 'style':'horizontal'}) }}
+        </div>
+    </div>
 </section>
 {% endblock %}

@@ -1,12 +1,12 @@
-<div class="row">
+<div class="row page-list">
     {% for page in pages %}
-    <div class="col-sm-3">
-        <a href="{{ path('page', { 'slug': page.slug }) }}">
-            <h3>{{page.name}}</h3>
-        </a>
-        <div>
-            {{ render(controller('FlowcodePageBundle:Page:block', {'pageId':page.id,'blockName':'preview'})) }}
+    <a href="{{ path('page', { 'slug': page.slug }) }}" class="col-sm-3">
+        <div class="page-item">
+            <h3 class="page-item-title">{{page.name}}</h3>
+            <div class="page-item-body">
+                {{ render(controller('FlowcodePageBundle:Page:block', {'pageId':page.id,'blockName':'preview'})) }}
+            </div>
         </div>
-    </div>
+    </a>
     {% endfor %}
 </div>

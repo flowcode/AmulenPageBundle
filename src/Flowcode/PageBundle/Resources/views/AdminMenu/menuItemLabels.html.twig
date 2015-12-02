@@ -2,7 +2,7 @@
     {% for label in labels %}
     <li>
         <span class="label label-default">{{label.lang}}</span>
-        {{label.content}}
+        <a href="{{ path("admin_menu_item_label_edit", {"id":label.id}) }}">{{label.content}}</a>
     </li>
     {% endfor %}
 </ul>

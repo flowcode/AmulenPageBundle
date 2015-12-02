@@ -313,7 +313,7 @@ class AdminMenuController extends Controller
             }
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_menu_item_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_menu_items', array('id' => $menu->getId())));
         }
 
         return array(
@@ -403,7 +403,7 @@ class AdminMenuController extends Controller
         }
 
         $editForm = $this->createMenuItemEditForm($menuItem);
-        $deleteForm = $this->createMenuItemDeleteForm($menuItem);
+        $deleteForm = $this->createMenuItemDeleteForm($menuItem->getId());
 
         return array(
             'entity' => $menuItem,
@@ -486,7 +486,7 @@ class AdminMenuController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('item'));
+        return $this->redirect($this->generateUrl('admin_menu_items', array("id" => $entity->getMenu()->getId())));
     }
 
     /**
@@ -519,6 +519,67 @@ class AdminMenuController extends Controller
 
         return array(
             'labels' => $labels,
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing MenuItem entity.
+     *
+     * @Route("/menuitemlabel/{id}/edit", name="admin_menu_item_label_edit")
+     * @Method("GET")
+     * @Template("FlowcodePageBundle:AdminMenu:edit_itemmenu_label.html.twig")
+     */
+    public function editMenuItemLabelAction(MenuItemLabel $menuItemlabel)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$menuItemlabel) {
+            throw $this->createNotFoundException('Unable to find MenuItem entity.');
+        }
+        $editForm = $this->createForm($this->get("amulen.page.form.menuitemlabel"), $menuItemlabel, array(
+            'action' => $this->generateUrl('admin_menu_item_label_update', array('id' => $menuItemlabel->getId())),
+            'method' => 'PUT',
+        ));
+        $editForm->add('submit', 'submit', array('label' => 'Update'));
+
+        return array(
+            'entity' => $menuItemlabel,
+            'form' => $editForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing MenuItem entity.
+     *
+     * @Route("/menuitemlabel/{id}", name="admin_menu_item_label_update")
+     * @Method("PUT")
+     * @Template("FlowcodePageBundle:AdminMenu:edit_itemmenu_label.html.twig")
+     */
+    public function updateMenuItemLabelAction(Request $request, MenuItemLabel $menuItemLabel)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$menuItemLabel) {
+            throw $this->createNotFoundException('Unable to find MenuItem entity.');
+        }
+
+        $editForm = $this->createForm($this->get("amulen.page.form.menuitemlabel"), $menuItemLabel, array(
+            'action' => $this->generateUrl('admin_menu_item_label_update', array('id' => $menuItemLabel->getId())),
+            'method' => 'PUT',
+        ));
+        $editForm->add('submit', 'submit', array('label' => 'Update'));
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('admin_menu_items', array('id' => $menuItemLabel->getMenuItem()->getMenu()->getId())));
+        }
+
+        return array(
+            'entity' => $menuItemLabel,
+            'form' => $editForm->createView(),
         );
     }
 

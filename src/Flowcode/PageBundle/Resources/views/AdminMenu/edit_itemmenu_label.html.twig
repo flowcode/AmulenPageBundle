@@ -1,0 +1,11 @@
+{% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
+
+{% block body -%}
+{{ include('FlowcodePageBundle:AdminMenu:menuHeader.html.twig') }}
+<section class="content">
+    <h1>ItemMenuLabel creation</h1>
+
+    {{ form(form, { 'style':'horizontal'}) }}
+
+</section>
+{% endblock %}
