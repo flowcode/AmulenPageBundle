@@ -40,6 +40,30 @@ class MenuController extends Controller
         );
     }
 
+    /**
+     * Show menu
+     *
+     * @Route("/{name}/getitems", name="menu_by_permalink")
+     * @Method("GET")
+     * @Template("FlowcodePageBundle:Menu:show.html.twig")
+     */
+    public function byPermalinkAction(Request $request, $name)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $menu = $em->getRepository("AmulenPageBundle:Menu")->findOneBy(array("name" => $name));
+
+        $itemRoot = $em->getRepository('AmulenPageBundle:MenuItem')->findOneBy(array('menu' => $menu, 'isRoot'=> true));
+        $menuItems = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy($itemRoot);
+        $locale = $request->getLocale();
+        $this->updateLinks($menuItems, $locale);
+
+        return array(
+            'extra_class' => 'nav navbar-nav navbar-right',
+            'menuitems' => $menuItems,
+        );
+    }
+
     private function updateLinks(&$items, $locale){
         $em = $this->getDoctrine()->getManager();
         foreach ($items as &$itemArr) {
