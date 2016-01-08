@@ -33,6 +33,7 @@ class PageController extends Controller
 
         $response = $this->forward('FlowcodePageBundle:Page:show', array(
             'id' => $page->getId(),
+            'parameterBag' => $request->query->all(),
         ));
         return $response;
     }
@@ -44,7 +45,7 @@ class PageController extends Controller
     * @Method("GET")
     * @Template()
     */
-    public function showAction(Request $request, $id)
+    public function showAction(Request $request, $id, $parameterBag)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -79,8 +80,7 @@ class PageController extends Controller
             ->addMeta('property', 'og:title', $pageTitle)
             ->addMeta('property', 'og:description', $pageDescription)
         ;
-
-        return $this->render($entity->getTemplate(), array('page' => $entity));
+        return $this->render($entity->getTemplate(), array('page' => $entity, 'parameterBag' => $parameterBag));
     }
 
     /**
