@@ -26,7 +26,14 @@ class PageType extends AbstractType {
                     'choices' => $this->availableTemplates,
                     'required' => false,
                 ))
-                ->add('category')
+                ->add('category', 'y_tree', array(
+                       'class' => "Amulen\ClassificationBundle\Entity\Category",
+                       'orderFields' => array('root' => 'asc','lft' => 'asc'),
+                       'prefixAttributeName' => 'data-level-prefix',
+                       'treeLevelField' => 'lvl',
+                       'required' => false,
+                       'multiple' => false,
+                       'attr' => array("class" => "tall")))
                 ->add('position')
                 ->add('enabled', null, array('required' => false,))
         ;

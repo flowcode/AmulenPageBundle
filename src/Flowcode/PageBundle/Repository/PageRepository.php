@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class PageRepository extends EntityRepository
 {
+
+    public function getMostViewed($length = 3){
+        $qb = $this->createQueryBuilder("p");
+        $qb->orderBy("p.viewCount", "DESC");
+        $qb->setMaxResults($length);
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getTotalViewedCount(){
+        $qb = $this->createQueryBuilder("p");
+        $qb->select("SUM(p.viewCount)");
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

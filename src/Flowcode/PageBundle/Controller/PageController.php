@@ -50,6 +50,8 @@ class PageController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
+        $entity->setViewCount($entity->getViewCount()+1);
+        $em->flush();
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Page entity.');

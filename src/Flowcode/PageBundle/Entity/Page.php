@@ -79,6 +79,13 @@ class Page {
     protected $position;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="view_count", type="integer")
+     */
+    protected $viewCount;
+
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -99,6 +106,7 @@ class Page {
      */
     public function __construct() {
         $this->blocks = new ArrayCollection();
+        $this->viewCount = 0;
     }
 
     /**
@@ -350,6 +358,29 @@ class Page {
      */
     public function getPosition() {
         return $this->position;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $viewCount
+     * @return Page
+     */
+    public function setViewCount($viewCount)
+    {
+        $this->viewCount = $viewCount;
+
+        return $this;
+    }
+
+    /**
+     * Get viewCount
+     *
+     * @return integer
+     */
+    public function getViewCount()
+    {
+        return $this->viewCount;
     }
 
 }
