@@ -77,6 +77,8 @@ class MenuController extends Controller
                 }else {
                     $itemArr['label'] = $menuItem->getName();
                 }
+            }else{
+                $itemArr['label'] = $menuItem->getName();
             }
             $this->updateLinks($itemArr['__children'], $locale);
         }

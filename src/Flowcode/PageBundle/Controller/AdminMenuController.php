@@ -272,7 +272,9 @@ class AdminMenuController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //$entities = $em->getRepository('FlowcodePageBundle:MenuItem')->findBy(array("menu" => $menu->getId()));
-        $entities = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy(null);
+        $entities = $em->getRepository('AmulenPageBundle:MenuItem')->childrenHierarchy(null, false, array(
+            "childSort" => array("position" => "ASC"),
+        ), null);
 
         return array(
             'menu' => $menu,
@@ -301,6 +303,8 @@ class AdminMenuController extends Controller
             }
 
             $em->persist($entity);
+
+            $this->get('amulen.page.service.menu')->reorder($menu);
             $em->flush();
 
             $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
@@ -450,6 +454,7 @@ class AdminMenuController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $this->get('amulen.page.service.menu')->reorder($menuItem->getMenu());
 
             $em->flush();
 
@@ -482,8 +487,14 @@ class AdminMenuController extends Controller
                 throw $this->createNotFoundException('Unable to find MenuItem entity.');
             }
 
-            $em->remove($entity);
+            $labels = $entity->getMenuItemLabels();
+            foreach($labels as $label){
+                $em->remove($label);
+            }
             $em->flush();
+
+            $em->getRepository('AmulenPageBundle:MenuItem')->removeFromTree($entity);
+            $em->clear();
         }
 
         return $this->redirect($this->generateUrl('admin_menu_items', array("id" => $entity->getMenu()->getId())));

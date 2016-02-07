@@ -31,3 +31,13 @@ services:
         arguments: [%kernel.default_locale%]
         tags:
             -  { name: kernel.event_subscriber }
+
+    amulen.page.repository.menuitem:
+        class: Doctrine\ORM\EntityRepository
+        factory: [@doctrine.orm.entity_manager, getRepository]
+        arguments:
+            - Amulen\PageBundle\Entity\MenuItem
+
+    amulen.page.service.menu:
+        class: Flowcode\PageBundle\Services\MenuService
+        arguments: ['@amulen.page.repository.menuitem']

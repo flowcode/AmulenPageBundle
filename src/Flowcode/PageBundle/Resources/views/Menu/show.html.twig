@@ -8,7 +8,10 @@
 
         <li class="{% if isdropdown %}dropdown{% endif %}" >
             {% if item.pageSlug %}
-                <a href="{{ path('page', { 'slug': item.pageSlug }) }}" >
+                <a href="{{ path('page', { 'slug': item.pageSlug }) }}"
+                   class="{% if isdropdown %}dropdown-toggle{% endif %}"
+                   {% if isdropdown %}data-toggle="dropdown" role="button"{% endif %}
+                >
                     {{ item.label|title }}
                 </a>
             {% else %}

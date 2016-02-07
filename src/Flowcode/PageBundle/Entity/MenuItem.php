@@ -38,12 +38,19 @@ class MenuItem
     protected $menu;
 
     /**
-     *@var \Amulen\PageBundle\Entity\Page
+     * @var \Amulen\PageBundle\Entity\Page
      *
      * @ManyToOne(targetEntity="\Amulen\PageBundle\Entity\Page")
      * @JoinColumn(name="page_id", referencedColumnName="id")
      */
     protected $page;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="link", type="string", length=255, nullable=true)
+     */
+    protected $link;
 
     /**
      *@var string
@@ -93,6 +100,13 @@ class MenuItem
     protected $isRoot;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="position", type="integer")
+     */
+    protected $position;
+
+    /**
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="MenuItem", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
@@ -113,6 +127,7 @@ class MenuItem
         $this->isRoot = false;
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->labels = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->position = 0;
     }
 
     /**
@@ -405,7 +420,7 @@ class MenuItem
      * @param \Amulen\PageBundle\Entity\MenuItemLabel $blocks
      */
     public function removeMenuItemLabel(\Amulen\PageBundle\Entity\MenuItemLabel $blocks) {
-        $this->blocks->removeElement($blocks);
+        $this->labels->removeElement($blocks);
     }
 
     /**
@@ -414,7 +429,45 @@ class MenuItem
      * @return Collection
      */
     public function getMenuItemLabels() {
-        return $this->blocks;
+        return $this->labels;
     }
+
+    /**
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     * @return MenuItem
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param mixed $position
+     * @return MenuItem
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
+    }
+
+
 
 }

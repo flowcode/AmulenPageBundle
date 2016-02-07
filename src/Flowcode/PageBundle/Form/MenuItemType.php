@@ -16,7 +16,7 @@ class MenuItemType extends AbstractType {
         $builder
                 ->add('name')
                 ->add('parent', 'y_tree', array(
-                       'class' => "Amulen\PageBundle\Entity\MenuItem",
+                       'class' => 'Amulen\PageBundle\Entity\MenuItem',
                        'orderFields' => array('root' => 'asc','lft' => 'asc'),
                        'prefixAttributeName' => 'data-level-prefix',
                        'treeLevelField' => 'lvl',
@@ -24,6 +24,8 @@ class MenuItemType extends AbstractType {
                        'multiple' => false,
                        'attr' => array("class" => "tall")))
                 ->add('page')
+                ->add('link', null, array("required" => false))
+                ->add('position', null, array("required" => false))
         ;
     }
 
