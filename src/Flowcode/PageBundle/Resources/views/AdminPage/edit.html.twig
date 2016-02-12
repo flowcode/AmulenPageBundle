@@ -7,14 +7,14 @@
         <div class="box-header">
             <h3>{{ "edit page"|trans|title }}</h3>
             <div class="box-tools">
-                <a href="{{ path('admin_page') }}">
-                    Back to the list
+                <a href="{{ path('admin_page_show', { 'id': entity.id }) }}">
+                    {{ "Back"|trans }}
                 </a>
-                {{ form(delete_form) }}
             </div>
         </div>
         <div class="box-body">
             {{ form(edit_form) }}
+            {{ form(delete_form) }}
         </div>
     </div>
 </section>

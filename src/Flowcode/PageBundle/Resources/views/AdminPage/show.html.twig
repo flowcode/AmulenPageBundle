@@ -10,10 +10,10 @@
                     <h3 class="box-title">{{ entity.name }}</h3>
                     <div class="box-tools">
                         <a href="{{ path('admin_page') }}" class="btn btn-xs btn-link">
-                            Back to the list
+                            {{ "Back to the list"|trans }}
                         </a>
                         <a href="{{ path('admin_page_edit', { 'id': entity.id }) }}" class="btn btn-xs btn-link">
-                            Edit
+                            {{ "Edit"|trans|title }}
                         </a>
                     </div>
                 </div>
@@ -21,15 +21,15 @@
                     <table class="table table-condensed">
                         <tbody>
                             <tr>
-                                <th>Slug</th>
+                                <th>{{ "Slug"|trans|title }}</th>
                                 <td>{{ entity.slug }}</td>
                             </tr>
                             <tr>
-                                <th>Description</th>
+                                <th>{{ "Description"|trans|title }}</th>
                                 <td>{{ entity.description }}</td>
                             </tr>
                             <tr>
-                                <th>Enabled</th>
+                                <th>{{ "Enabled"|trans|title }}</th>
                                 <td>{{ entity.enabled }}</td>
                             </tr>
                         </tbody>
@@ -40,17 +40,17 @@
         <div class="col-sm-6">
             <div class="box box-solid">
                 <div class="box-header">
-                    <h3 class="box-title">Blocks</h3>
+                    <h3 class="box-title">{{ "Blocks"|trans|title }}</h3>
                     <div class="box-tools">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                {{ "create new"|trans }}
+                                {{ "create new"|trans|title }}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li>
                                     <a href="{{ path('admin_page_block_new', {'page_id': entity.id, 'type' : 'type_text'}) }}">
-                                        {{ "plain text"|trans }}
+                                        {{ "plain text"|trans|title }}
                                     </a>
                                 </li>
                                 <li>

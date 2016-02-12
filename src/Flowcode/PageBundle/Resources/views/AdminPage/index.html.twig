@@ -17,9 +17,9 @@
                 <thead>
                     <tr>
                         <th{% if pagination.isSorted('p.Name') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Name', 'p.name') }}</th>
-                        <th>Slug</th>
-                        <th>Description</th>
-                        <th>Enabled</th>
+                        <th>{{ "Slug"|trans|title }}</th>
+                        <th>{{ "Description"|trans|title }}</th>
+                        <th>{{ "Enabled"|trans|title }}</th>
                     </tr>
                 </thead>
                 <tbody>
