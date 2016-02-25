@@ -69,17 +69,18 @@ class MenuController extends Controller
         foreach ($items as &$itemArr) {
             $menuItem = $em->getRepository('AmulenPageBundle:MenuItem')->find($itemArr['id']);
             $menuItemLabel = $em->getRepository('AmulenPageBundle:MenuItemLabel')->findOneBy(array("menuItem" => $itemArr['id'], "lang" => $locale));
+
             if($menuItem->getPage()){
                 $page = $menuItem->getPage();
                 $itemArr['pageSlug'] = $page->getSlug();
-                if($menuItemLabel){
-                    $itemArr['label'] = $menuItemLabel->getContent();
-                }else {
-                    $itemArr['label'] = $menuItem->getName();
-                }
-            }else{
+            }
+
+            if($menuItemLabel){
+                $itemArr['label'] = $menuItemLabel->getContent();
+            }else {
                 $itemArr['label'] = $menuItem->getName();
             }
+
             $this->updateLinks($itemArr['__children'], $locale);
         }
     }
