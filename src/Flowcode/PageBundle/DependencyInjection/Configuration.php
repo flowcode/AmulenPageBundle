@@ -21,6 +21,12 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('flowcode_page');
         $rootNode
             ->children()
+                ->arrayNode('available_languages')
+                    ->useAttributeAsKey('id')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+            ->children()
                 ->arrayNode('block_types')
                     ->prototype('array')
                         ->children()

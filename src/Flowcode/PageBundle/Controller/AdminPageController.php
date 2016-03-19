@@ -252,7 +252,7 @@ class AdminPageController extends Controller {
      */
     public function blocksAction($page_id) {
         $em = $this->getDoctrine()->getManager();
-        $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+        $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
         $entities = array();
         foreach ($availableLangs as $key => $value) {
             $entities[] = array(
@@ -282,7 +282,7 @@ class AdminPageController extends Controller {
         $form = $this->createBlockCreateForm($entity);
         $form->handleRequest($request);
 
-        $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+        $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();

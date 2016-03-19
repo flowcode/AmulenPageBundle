@@ -26,6 +26,7 @@ class FlowcodePageExtension extends Extension {
 
         $container->setParameter('flowcode_page.block_types', $config['block_types']);
         $container->setParameter('flowcode_page.templates', array_flip($config['templates']));
+        $container->setParameter('flowcode_page.available_languages', $config['available_languages']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');

@@ -307,7 +307,7 @@ class AdminMenuController extends Controller
             $this->get('amulen.page.service.menu')->reorder($menu);
             $em->flush();
 
-            $availableLangs = array('es' => "es", 'en' => "en", 'pt' => "pt");
+            $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
             foreach ($availableLangs as $key => $value) {
                 $menuItemLabel = new MenuItemLabel();
                 $menuItemLabel->setLang($key);
