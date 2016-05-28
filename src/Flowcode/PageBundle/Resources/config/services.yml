@@ -41,3 +41,9 @@ services:
     amulen.page.service.menu:
         class: Flowcode\PageBundle\Services\MenuService
         arguments: ['@amulen.page.repository.menuitem']
+
+    amulen.page.showmenu_eventsubscriber:
+        class: Flowcode\PageBundle\Event\ShowMenuSubscriber
+        arguments: ['@router', '@translator']
+        tags:
+            - { name: kernel.event_subscriber }
