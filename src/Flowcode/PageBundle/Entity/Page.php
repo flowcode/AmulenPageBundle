@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 /**
  * Page
  */
-class Page {
+class Page
+{
 
     /**
      * @var integer
@@ -45,6 +46,11 @@ class Page {
      * @ORM\Column(name="description", type="text")
      */
     protected $description;
+
+    /**
+     * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     */
+    protected $image;
 
     /**
      * @var string
@@ -104,7 +110,8 @@ class Page {
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->blocks = new ArrayCollection();
         $this->viewCount = 0;
     }
@@ -114,7 +121,8 @@ class Page {
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -124,7 +132,8 @@ class Page {
      * @param string $name
      * @return Page
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -135,7 +144,8 @@ class Page {
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -145,7 +155,8 @@ class Page {
      * @param string $slug
      * @return Page
      */
-    public function setSlug($slug) {
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
 
         return $this;
@@ -156,7 +167,8 @@ class Page {
      *
      * @return string
      */
-    public function getSlug() {
+    public function getSlug()
+    {
         return $this->slug;
     }
 
@@ -166,7 +178,8 @@ class Page {
      * @param string $description
      * @return Page
      */
-    public function setDescription($description) {
+    public function setDescription($description)
+    {
         $this->description = $description;
 
         return $this;
@@ -177,7 +190,8 @@ class Page {
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
@@ -187,7 +201,8 @@ class Page {
      * @param boolean $enabled
      * @return Page
      */
-    public function setEnabled($enabled) {
+    public function setEnabled($enabled)
+    {
         $this->enabled = $enabled;
 
         return $this;
@@ -198,7 +213,8 @@ class Page {
      *
      * @return boolean
      */
-    public function getEnabled() {
+    public function getEnabled()
+    {
         return $this->enabled;
     }
 
@@ -208,7 +224,8 @@ class Page {
      * @param Block $blocks
      * @return Page
      */
-    public function addBlock(Block $blocks) {
+    public function addBlock(Block $blocks)
+    {
         $this->blocks[] = $blocks;
 
         return $this;
@@ -219,7 +236,8 @@ class Page {
      *
      * @param Block $blocks
      */
-    public function removeBlock(Block $blocks) {
+    public function removeBlock(Block $blocks)
+    {
         $this->blocks->removeElement($blocks);
     }
 
@@ -228,19 +246,23 @@ class Page {
      *
      * @return Collection
      */
-    public function getBlocks() {
+    public function getBlocks()
+    {
         return $this->blocks;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 
-    public function getSeoMetadata() {
+    public function getSeoMetadata()
+    {
         return $this->seoMetadata;
     }
 
-    public function setSeoMetadata($metadata) {
+    public function setSeoMetadata($metadata)
+    {
         $this->seoMetadata = $metadata;
     }
 
@@ -250,7 +272,8 @@ class Page {
      * @param \DateTime $created
      * @return Page
      */
-    public function setCreated($created) {
+    public function setCreated($created)
+    {
         $this->created = $created;
 
         return $this;
@@ -261,7 +284,8 @@ class Page {
      *
      * @return \DateTime
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->created;
     }
 
@@ -271,7 +295,8 @@ class Page {
      * @param \DateTime $updated
      * @return Page
      */
-    public function setUpdated($updated) {
+    public function setUpdated($updated)
+    {
         $this->updated = $updated;
 
         return $this;
@@ -282,11 +307,13 @@ class Page {
      *
      * @return \DateTime
      */
-    public function getUpdated() {
+    public function getUpdated()
+    {
         return $this->updated;
     }
 
-    public function getBlock($name) {
+    public function getBlock($name)
+    {
         $block2return = NULL;
         foreach ($this->getBlocks() as $block) {
             if ($block->getName() == $name) {
@@ -303,7 +330,8 @@ class Page {
      * @param string $template
      * @return Page
      */
-    public function setTemplate($template) {
+    public function setTemplate($template)
+    {
         $this->template = $template;
 
         return $this;
@@ -314,7 +342,8 @@ class Page {
      *
      * @return string
      */
-    public function getTemplate() {
+    public function getTemplate()
+    {
         return $this->template;
     }
 
@@ -324,7 +353,8 @@ class Page {
      * @param \Amulen\ClassificationBundle\Entity\Category $category
      * @return Page
      */
-    public function setCategory(\Amulen\ClassificationBundle\Entity\Category $category = null) {
+    public function setCategory(\Amulen\ClassificationBundle\Entity\Category $category = null)
+    {
         $this->category = $category;
 
         return $this;
@@ -335,7 +365,8 @@ class Page {
      *
      * @return \Amulen\ClassificationBundle\Entity\Category
      */
-    public function getCategory() {
+    public function getCategory()
+    {
         return $this->category;
     }
 
@@ -345,7 +376,8 @@ class Page {
      * @param integer $position
      * @return Page
      */
-    public function setPosition($position) {
+    public function setPosition($position)
+    {
         $this->position = $position;
 
         return $this;
@@ -356,7 +388,8 @@ class Page {
      *
      * @return integer
      */
-    public function getPosition() {
+    public function getPosition()
+    {
         return $this->position;
     }
 
@@ -382,5 +415,22 @@ class Page {
     {
         return $this->viewCount;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+    
 
 }

@@ -17,7 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @Route("/admin/page")
  */
-class AdminPageController extends Controller {
+class AdminPageController extends Controller
+{
 
     /**
      * Lists all Page entities.
@@ -26,7 +27,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function indexAction(Request $request) {
+    public function indexAction(Request $request)
+    {
 
         $page = $request->get("page", 1);
         $em = $this->getDoctrine()->getManager();
@@ -47,7 +49,8 @@ class AdminPageController extends Controller {
      * @Method("POST")
      * @Template("FlowcodePageBundle:Page:new.html.twig")
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $entity = new Page();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -57,7 +60,13 @@ class AdminPageController extends Controller {
             $em->persist($entity);
             $em->flush();
 
+            $this->addFlash('success', 'Page edited succedfuly');
+
             return $this->redirect($this->generateUrl('admin_page_show', array('id' => $entity->getId())));
+        } else {
+            $this->get('session')->getFlashBag()->add(
+                'warning', $this->get('translator')->trans('save_fail')
+            );
         }
 
         return array(
@@ -73,7 +82,8 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createCreateForm(Page $entity) {
+    private function createCreateForm(Page $entity)
+    {
 
         $form = $this->createForm($this->get("amulen.page.form.page"), $entity, array(
             'action' => $this->generateUrl('admin_page_create'),
@@ -92,7 +102,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function newAction() {
+    public function newAction()
+    {
         $entity = new Page();
         $form = $this->createCreateForm($entity);
 
@@ -109,7 +120,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id) {
+    public function showAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
 
@@ -132,7 +144,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
@@ -158,7 +171,8 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createEditForm(Page $entity) {
+    private function createEditForm(Page $entity)
+    {
         $form = $this->createForm($this->get("amulen.page.form.page"), $entity, array(
             'action' => $this->generateUrl('admin_page_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -176,7 +190,8 @@ class AdminPageController extends Controller {
      * @Method("PUT")
      * @Template("FlowcodePageBundle:Page:edit.html.twig")
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
@@ -192,6 +207,7 @@ class AdminPageController extends Controller {
         if ($editForm->isValid()) {
             $em->flush();
 
+            $this->addFlash('success', 'Page edited succedfuly');
             return $this->redirect($this->generateUrl('admin_page_edit', array('id' => $id)));
         }
 
@@ -208,7 +224,8 @@ class AdminPageController extends Controller {
      * @Route("/{id}", name="admin_page_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -234,13 +251,13 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createDeleteForm($id) {
+    private function createDeleteForm($id)
+    {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_page_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
+            ->setAction($this->generateUrl('admin_page_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm();
     }
 
     /**
@@ -250,7 +267,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template()
      */
-    public function blocksAction($page_id) {
+    public function blocksAction($page_id)
+    {
         $em = $this->getDoctrine()->getManager();
         $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
         $entities = array();
@@ -276,7 +294,8 @@ class AdminPageController extends Controller {
      * @Method("POST")
      * @Template("FlowcodePageBundle:AdminPage:new_block.html.twig")
      */
-    public function createBlockAction(Request $request, $type) {
+    public function createBlockAction(Request $request, $type)
+    {
         $entity = new Block();
         $entity->setType($type);
         $form = $this->createBlockCreateForm($entity);
@@ -286,7 +305,7 @@ class AdminPageController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $page= $entity->getPage();
+            $page = $entity->getPage();
             foreach ($availableLangs as $key => $value) {
                 $entityLang = new Block();
                 $entityLang->setName($entity->getName());
@@ -316,7 +335,8 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createBlockCreateForm(Block $entity) {
+    private function createBlockCreateForm(Block $entity)
+    {
 
         $types = $this->container->getParameter('flowcode_page.block_types');
         $class = $types[$entity->getType()]["class_type"];
@@ -338,7 +358,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template("FlowcodePageBundle:AdminPage:new_block.html.twig")
      */
-    public function newBlockAction($page_id, $type) {
+    public function newBlockAction($page_id, $type)
+    {
         $em = $this->getDoctrine()->getManager();
         $page = $em->getRepository('AmulenPageBundle:Page')->find($page_id);
 
@@ -360,7 +381,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template("FlowcodePageBundle:AdminPage:show_block.html.twig")
      */
-    public function showBlockAction($id) {
+    public function showBlockAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
@@ -384,7 +406,8 @@ class AdminPageController extends Controller {
      * @Method("GET")
      * @Template("FlowcodePageBundle:AdminPage:edit_block.html.twig")
      */
-    public function editBlockAction($id) {
+    public function editBlockAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
@@ -412,7 +435,8 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createBlockEditForm(Block $entity) {
+    private function createBlockEditForm(Block $entity)
+    {
         $types = $this->container->getParameter('flowcode_page.block_types');
         $class = $types[$entity->getType()]["class_type"];
 
@@ -433,7 +457,8 @@ class AdminPageController extends Controller {
      * @Method("PUT")
      * @Template("FlowcodePageBundle:Block:edit.html.twig")
      */
-    public function updateBlockAction(Request $request, $id) {
+    public function updateBlockAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('AmulenPageBundle:Block')->find($id);
@@ -468,7 +493,8 @@ class AdminPageController extends Controller {
      * @Route("/block/{id}", name="admin_page_block_delete")
      * @Method("DELETE")
      */
-    public function deleteBlockAction(Request $request, $id) {
+    public function deleteBlockAction(Request $request, $id)
+    {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -494,15 +520,14 @@ class AdminPageController extends Controller {
      *
      * @return Form The form
      */
-    private function createBlockDeleteForm($id) {
+    private function createBlockDeleteForm($id)
+    {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('block_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
+            ->setAction($this->generateUrl('block_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm();
     }
 
-    
 
 }

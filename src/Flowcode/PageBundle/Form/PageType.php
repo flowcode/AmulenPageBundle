@@ -22,6 +22,7 @@ class PageType extends AbstractType {
         $builder
                 ->add('name')
                 ->add('description')
+                ->add('image')
                 ->add('template', 'choice', array(
                     'choices' => $this->availableTemplates,
                     'required' => false,

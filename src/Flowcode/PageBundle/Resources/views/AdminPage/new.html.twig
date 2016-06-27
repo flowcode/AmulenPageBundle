@@ -1,20 +1,62 @@
 {% extends 'FlowcodeDashboardBundle:Default:layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset("assets/jquery-ui/themes/pepper-grinder/jquery-ui.min.css") }}" rel="stylesheet"
+          type="text/css">
+    <link href="{{ asset("assets/elfinder/dist/css/elfinder.min.css") }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset("assets/elfinder/dist/css/theme.css") }}" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block body -%}
-{{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
-<section class="content">
-    <div class="box box-solid">
-        <div class="box-header">
-            <h3 class="box-title">{{ "create"|trans|title }}</h3>
-            <div class="box-tools">
-                <a href="{{ path('admin_page') }}">
-                    {{ "Back to the list"|trans }}
-                </a>
+    {{ include('FlowcodePageBundle:AdminPage:pageHeader.html.twig') }}
+    <section class="content">
+        <div class="box box-solid">
+            <div class="box-header">
+                <h3 class="box-title">{{ "create"|trans|title }}</h3>
+                <div class="box-tools">
+                    <a href="{{ path('admin_page') }}">
+                        {{ "Back to the list"|trans }}
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_label(form.image) }}
+                    <div class="col-xs-5">
+                        {{ form_widget(form.image) }}
+                        {{ form_errors(form.image) }}
+                    </div>
+                    <div class="col-xs-4">
+                        <button class="btn btn-default" type="button" id="browser-trigger">
+                            <i class="fa fa-search" ></i>
+                            Imagen
+                        </button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
             </div>
         </div>
-        <div class="box-body">
-            {{ form(form) }}
-        </div>
-    </div>
-</section>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset("assets/jquery-ui/jquery-ui.min.js") }}"></script>
+    <script src="{{ asset("assets/elfinder/dist/js/elfinder.min.js") }}"></script>
+    <script src="{{ asset("assets/elfinder/dist/js/i18n/elfinder.es.js") }}"></script>
+    <script type="text/javascript">
+        $('select').select2();
+        $('#browser-trigger').click(function () {
+            $('<div id="editor" />').dialogelfinder({
+                url: '{{ path('ef_connect') }}',
+                getFileCallback: function (file) {
+                    $("#flowcode_pagebundle_page_image").val(file.path);
+                    $('#editor').dialogelfinder('close');
+                }
+            });
+        });
+
+    </script>
 {% endblock %}
