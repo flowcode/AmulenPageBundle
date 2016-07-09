@@ -28,7 +28,7 @@ class PageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $page = $em->getRepository('AmulenPageBundle:Page')->findOneBy(array("slug" => $slug));
         if (!$page) {
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('homepage'));
         }
 
         $response = $this->forward('FlowcodePageBundle:Page:show', array(

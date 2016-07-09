@@ -297,7 +297,6 @@ class AdminMenuController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
             if($entity->getPage()){
                 $entity->setPageSlug($entity->getPage());
             }
@@ -452,10 +451,11 @@ class AdminMenuController extends Controller
 
         $editForm = $this->createMenuItemEditForm($menuItem);
         $editForm->handleRequest($request);
-
         if ($editForm->isValid()) {
             $this->get('amulen.page.service.menu')->reorder($menuItem->getMenu());
-
+            if($menuItem->getPage()){
+                $menuItem->setPageSlug($menuItem->getPage());
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('admin_menu_items', array('id' => $menuItem->getMenu()->getId())));

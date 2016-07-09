@@ -101,7 +101,7 @@ class MenuItem
 
     /**
      * @var integer
-     *
+     * @Gedmo\SortablePosition
      * @ORM\Column(name="position", type="integer")
      */
     protected $position;
