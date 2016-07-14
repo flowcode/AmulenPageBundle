@@ -67,6 +67,31 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6">
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">{{ "SEO"|trans|title }}</h3>
+                    <div class="box-tools">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                {{ "create new"|trans|title }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="{{ path('admin_page_block_new', {'page_id': entity.id, 'type' : 'type_seo'}) }}">
+                                        {{ "SEO"|trans|title }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {{render(controller('FlowcodePageBundle:AdminPage:seo', {'page_id': entity.id}))}}
+                </div>
+            </div>
+        </div>
     </div>
 
 

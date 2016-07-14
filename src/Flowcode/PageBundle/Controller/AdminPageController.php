@@ -65,7 +65,8 @@ class AdminPageController extends Controller
             return $this->redirect($this->generateUrl('admin_page_show', array('id' => $entity->getId())));
         } else {
             $this->get('session')->getFlashBag()->add(
-                'warning', $this->get('translator')->trans('save_fail')
+                'warning',
+                $this->get('translator')->trans('save_fail')
             );
         }
 
@@ -272,10 +273,11 @@ class AdminPageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
         $entities = array();
+        $types = array("type_html", "type_text");
         foreach ($availableLangs as $key => $value) {
             $entities[] = array(
                 'lang' => $key,
-                'blocks' => $em->getRepository('AmulenPageBundle:Block')->findBy(array("page" => $page_id, "lang" => $value))
+                'blocks' => $em->getRepository('AmulenPageBundle:Block')->findBlockByPageAndLangAndInType($page_id, $value, $types)
             );
         }
         $page = $em->getRepository('AmulenPageBundle:Page')->find($page_id);
@@ -286,6 +288,33 @@ class AdminPageController extends Controller
         );
     }
 
+
+    /**
+     * Finds and displays a Block entity.
+     *
+     * @Route("/page/{page_id}/seo", name="admin_page_seo")
+     * @Method("GET")
+     * @Template("FlowcodePageBundle:AdminPage:blocks.html.twig")
+     */
+    public function seoAction($page_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $availableLangs = $this->container->getParameter('flowcode_page.available_languages');
+        $entities = array();
+        $types = array("type_seo");
+        foreach ($availableLangs as $key => $value) {
+            $entities[] = array(
+                'lang' => $key,
+                'blocks' => $em->getRepository('AmulenPageBundle:Block')->findBlockByPageAndLangAndInType($page_id, $value, $types)
+            );
+        }
+        $page = $em->getRepository('AmulenPageBundle:Page')->find($page_id);
+
+        return array(
+            'page' => $page,
+            'entities' => $entities,
+        );
+    }
 
     /**
      * Creates a new Block entity.
@@ -528,6 +557,4 @@ class AdminPageController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm();
     }
-
-
 }

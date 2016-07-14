@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Amulen\PageBundle\Entity\Page;
+use Flowcode\DashboardBundle\Entity\Setting;
 
 /**
 * Page controller.
@@ -62,22 +63,48 @@ class PageController extends Controller
 
         /* title */
         $title = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $id, 'name' => "title", "lang" => $locale));
-        if($title){
+        if ($title) {
             $pageTitle = $title->getContent() . " - " . $seoPage->getTitle();
-        }else{
+        } else {
             $pageTitle = $entity->getName() . " - " . $seoPage->getTitle();
         }
+        $seoPage
+            ->setTitle($pageTitle);
 
         /* description */
         $description = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $id, 'name' => "description", "lang" => $locale));
-        if($description){
+        if ($description) {
             $pageDescription = $description->getContent();
-        }else{
+        } else {
             $pageDescription = $entity->getDescription();
+        }
+        /* locale */
+        $localeOg = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $id, 'name' => "locale", "lang" => $locale));
+        if ($localeOg) {
+            $pagelocale = $localeOg->getContent();
+            $seoPage->addMeta('locale', 'og:locale', $pagelocale);
+        } else {
+            $seoPage->addMeta('locale', 'og:locale', $locale);
+        }
+        /* type */
+        $type = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $id, 'name' => "type", "lang" => $locale));
+        if ($type) {
+            $pagelocale = $type->getContent();
+            $seoPage->addMeta('type', 'og:type', $pagelocale);
+        }
+        /* type */
+        $site_name = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $id, 'name' => "site_name", "lang" => $locale));
+        if ($site_name) {
+            $pagelocale = $site_name->getContent();
+            $seoPage->addMeta('site_name', 'og:site_name', $pagelocale);
+        }
+
+        if (!is_null($entity->getImage()) && $entity->getImage() != "") {
+            $siteUrl = $this->get("amulen.dashboard.service.setting")->getValue(Setting::SITE_URL);
+            $seoPage->addMeta('image', 'og:image', $siteUrl."/".$entity->getImage());
         }
 
         $seoPage
-            ->setTitle($pageTitle)
             ->addMeta('name', 'description', $pageDescription)
             ->addMeta('property', 'og:title', $pageTitle)
             ->addMeta('property', 'og:description', $pageDescription)
@@ -119,7 +146,7 @@ class PageController extends Controller
         $locale = $request->getLocale();
         $entity = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $pageId, 'name' => $blockName, "lang" => $locale));
         $content = "";
-        if($entity){
+        if ($entity) {
             $content = $entity->getContent();
         }
         return array(
