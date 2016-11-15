@@ -38,9 +38,19 @@ services:
         arguments:
             - Amulen\PageBundle\Entity\MenuItem
 
+    amulen.page.repository.block:
+        class: Doctrine\ORM\EntityRepository
+        factory: [@doctrine.orm.entity_manager, getRepository]
+        arguments:
+            - Amulen\PageBundle\Entity\Block
+
     amulen.page.service.menu:
         class: Flowcode\PageBundle\Services\MenuService
         arguments: ['@amulen.page.repository.menuitem']
+
+    amulen.page.service.page:
+        class: Flowcode\PageBundle\Services\PageService
+        arguments: ['@service_container', '@amulen.page.repository.block']
 
     amulen.page.showmenu_eventsubscriber:
         class: Flowcode\PageBundle\Event\ShowMenuSubscriber

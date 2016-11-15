@@ -49,7 +49,6 @@ class PageController extends Controller
     public function showAction(Request $request, $id, $parameterBag)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
         $entity->setViewCount($entity->getViewCount()+1);
         $em->flush();
