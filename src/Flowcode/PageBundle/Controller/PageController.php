@@ -100,7 +100,7 @@ class PageController extends Controller
 
         if (!is_null($entity->getImage()) && $entity->getImage() != "") {
             $siteUrl = $this->get("amulen.dashboard.service.setting")->getValue(Setting::SITE_URL);
-            $seoPage->addMeta('image', 'og:image', $siteUrl."/".$entity->getImage());
+            $seoPage->addMeta('property', 'og:image', $siteUrl."/".$entity->getImage());
         }
 
         $seoPage

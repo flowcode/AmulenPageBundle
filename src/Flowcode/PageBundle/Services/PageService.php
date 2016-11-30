@@ -69,7 +69,7 @@ class PageService
 
         if (!is_null($page->getImage()) && $page->getImage() != "") {
             $siteUrl = $this->container->get("amulen.dashboard.service.setting")->getValue(Setting::SITE_URL);
-            $seoPage->addMeta('image', 'og:image', $siteUrl."/".$page->getImage());
+            $seoPage->addMeta('property', 'og:image', $siteUrl."/".$page->getImage());
         }
         $seoPage
             ->addMeta('name', 'description', $pageDescription)
