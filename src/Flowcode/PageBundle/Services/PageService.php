@@ -69,8 +69,12 @@ class PageService
 
         if (!is_null($page->getImage()) && $page->getImage() != "") {
             $siteUrl = $this->container->get("amulen.dashboard.service.setting")->getValue(Setting::SITE_URL);
-            $seoPage->addMeta('property', 'og:image', $siteUrl."/".$page->getImage());
+            $seoPage->addMeta('property', 'og:image', str_replace(" ","%20",$siteUrl."/".$page->getImage()));
+            $seoPage->addMeta('property', 'twitter:image', str_replace(" ","%20",$siteUrl."/".$page->getImage()));
         }
+
+        $seoPage->addMeta('property', 'twitter:title', $pageTitle);
+        $seoPage->addMeta('property', 'twitter:description', $pageDescription);
         $seoPage
             ->addMeta('name', 'description', $pageDescription)
             ->addMeta('property', 'og:title', $pageTitle)
