@@ -11,19 +11,19 @@ use Amulen\PageBundle\Entity\Page;
 use Flowcode\DashboardBundle\Entity\Setting;
 
 /**
-* Page controller.
-*
-* @Route("/{_locale}")
-*/
+ * Page controller.
+ *
+ * @Route("/{_locale}")
+ */
 class PageController extends Controller
 {
     /**
-    * Lists all Page entities.
-    *
-    * @Route("/{slug}", name="page")
-    * @Method("GET")
-    * @Template()
-    */
+     * Lists all Page entities.
+     *
+     * @Route("/{slug}", name="page")
+     * @Method("GET")
+     * @Template()
+     */
     public function indexAction(Request $request, $slug)
     {
         $em = $this->getDoctrine()->getManager();
@@ -40,17 +40,17 @@ class PageController extends Controller
     }
 
     /**
-    * Finds and displays a Page entity.
-    *
-    * @Route("/{id}", name="page_show")
-    * @Method("GET")
-    * @Template()
-    */
+     * Finds and displays a Page entity.
+     *
+     * @Route("/{id}", name="page_show")
+     * @Method("GET")
+     * @Template()
+     */
     public function showAction(Request $request, $id, $parameterBag)
     {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('AmulenPageBundle:Page')->find($id);
-        $entity->setViewCount($entity->getViewCount()+1);
+        $entity->setViewCount($entity->getViewCount() + 1);
         $em->flush();
 
         if (!$entity) {
@@ -100,8 +100,8 @@ class PageController extends Controller
 
         if (!is_null($entity->getImage()) && $entity->getImage() != "") {
             $siteUrl = $this->get("amulen.dashboard.service.setting")->getValue(Setting::SITE_URL);
-            $seoPage->addMeta('property', 'og:image', str_replace(" ","%20",$siteUrl."/".$entity->getImage()));
-            $seoPage->addMeta('property', 'twitter:image', str_replace(" ","%20",$siteUrl."/".$entity->getImage()));
+            $seoPage->addMeta('property', 'og:image', str_replace(" ", "%20", $siteUrl . "/" . $entity->getImage()));
+            $seoPage->addMeta('property', 'twitter:image', str_replace(" ", "%20", $siteUrl . "/" . $entity->getImage()));
         }
         $seoPage->addMeta('property', 'twitter:title', $pageTitle);
         $seoPage->addMeta('property', 'twitter:description', $pageDescription);
@@ -109,24 +109,24 @@ class PageController extends Controller
         $seoPage
             ->addMeta('name', 'description', $pageDescription)
             ->addMeta('property', 'og:title', $pageTitle)
-            ->addMeta('property', 'og:description', $pageDescription)
-        ;
+            ->addMeta('property', 'og:description', $pageDescription);
         return $this->render($entity->getTemplate(), array('page' => $entity, 'parameterBag' => $parameterBag));
     }
 
     /**
-    * Find by .
-    *
-    * @Route("/bycategory/{category_name}", name="page_page_list")
-    * @Method("GET")
-    * @Template()
-    */
-    public function findByCategoryAction(Request $request, $category_name)
+     * Find by .
+     *
+     * @Route("/bycategory/{category_name}", name="page_page_list")
+     * @Method("GET")
+     * @Template()
+     */
+    public function findByCategoryAction(Request $request, $category_name, $pageId = null)
     {
         $em = $this->getDoctrine()->getManager();
 
         $category = $em->getRepository('AmulenClassificationBundle:Category')->findOneBy(array("name" => $category_name));
-        $pages = $em->getRepository('AmulenPageBundle:Page')->findBy(array("category" => $category), array("position" => "ASC"));
+
+        $pages = $em->getRepository('AmulenPageBundle:Page')->findByCategory($category->getId(), $pageId);
 
         return array(
             "pages" => $pages
@@ -134,18 +134,19 @@ class PageController extends Controller
     }
 
     /**
-    * Finds and displays a Page entity.
-    *
-    * @Route("/block/{pageId}/{blockName}", name="page_block_show")
-    * @Method("GET")
-    * @Template()
-    */
+     * Finds and displays a Page entity.
+     *
+     * @Route("/block/{pageId}/{blockName}", name="page_block_show")
+     * @Method("GET")
+     * @Template()
+     */
     public function blockAction(Request $request, $pageId, $blockName)
     {
         $em = $this->getDoctrine()->getManager();
 
         /* get current locale */
         $locale = $request->getLocale();
+        
         $entity = $em->getRepository('AmulenPageBundle:Block')->findOneBy(array('page' => $pageId, 'name' => $blockName, "lang" => $locale));
         $content = "";
         if ($entity) {

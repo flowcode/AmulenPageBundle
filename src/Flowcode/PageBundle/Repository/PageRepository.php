@@ -13,14 +13,35 @@ use Doctrine\ORM\EntityRepository;
 class PageRepository extends EntityRepository
 {
 
-    public function getMostViewed($length = 3){
+    public function findByCategory($categoryId, $exceptPageId = null)
+    {
+        $qb = $this->createQueryBuilder("p");
+        $qb->where("p.enabled = 1");
+
+
+        $qb->andWhere("p.category = :category_id")
+            ->setParameter("category_id", $categoryId);
+
+        if ($exceptPageId) {
+            $qb->andWhere("p.id <> :except_id")
+                ->setParameter("except_id", $exceptPageId);
+        }
+
+        $qb->orderBy("p.position", "ASC");
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getMostViewed($length = 3)
+    {
         $qb = $this->createQueryBuilder("p");
         $qb->orderBy("p.viewCount", "DESC");
         $qb->setMaxResults($length);
         return $qb->getQuery()->getResult();
     }
 
-    public function getTotalViewedCount(){
+    public function getTotalViewedCount()
+    {
         $qb = $this->createQueryBuilder("p");
         $qb->select("SUM(p.viewCount)");
         return $qb->getQuery()->getSingleScalarResult();
